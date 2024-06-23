@@ -1,5 +1,9 @@
 version: '3.4'
 
+services:
+  rag_api:
+    image: ghcr.io/danny-avila/librechat-rag-api-dev:latest
+
 # Please consult our docs for more info: https://www.librechat.ai/docs/configuration/docker_override
 
 # TO USE THIS FILE, FIRST UNCOMMENT THE LINE ('services:')
