@@ -44,7 +44,7 @@ endpoints:
   custom:
     - name: "TalexCK's Chat Bot"
       apiKey: "${TCB_API_KEY}"
-      baseURL: "https://api3.talexck.top/v1"
+      baseURL: "https://api3.talexck.top/v1/chat/completions"
       models:
         default: [
           "talexck_chat_bot_v1",
