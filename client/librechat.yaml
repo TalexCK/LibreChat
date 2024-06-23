@@ -7,6 +7,8 @@ version: 1.1.4
 # Cache settings: Set to true to enable caching
 cache: true
 
+fileStrategy: "firebase"
+
 # Custom interface configuration
 interface:
   # Privacy policy settings
@@ -23,10 +25,7 @@ interface:
 registration:
   socialLogins: ['github', 'discord', 'google']
   allowedDomains:
-   - "gmail.com"
-   - "talexck.top"
-   - "outlook.com"
-
+   - "*"
 # rateLimits:
 #   fileUploads:
 #     ipMax: 100
