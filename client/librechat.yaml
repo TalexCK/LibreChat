@@ -21,7 +21,7 @@ interface:
 
 # Example Registration Object Structure (optional)
 registration:
-  socialLogins: ['github', 'discord']
+  socialLogins: ['github', 'discord', 'google']
   allowedDomains:
    - "gmail.com"
    - "talexck.top"
@@ -57,6 +57,19 @@ endpoints:
       forcePrompt: false
       modelDisplayLabel: "TalexCK's Chat Bot"
       iconURL: 'https://avatars.githubusercontent.com/u/84849086?v=4'
+    - name: "OpenRouter"
+      # For `apiKey` and `baseURL`, you can use environment variables that you define.
+      # recommended environment variables:
+      apiKey: "${OPENROUTER_KEY}" # NOT OPENROUTER_API_KEY
+      baseURL: "https://openrouter.ai/api/v1"
+      models:
+        default: ["meta-llama/llama-3-70b-instruct"]
+        fetch: true
+      titleConvo: true
+      titleModel: "meta-llama/llama-3-70b-instruct"
+      # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
+      dropParams: ["stop"]
+      modelDisplayLabel: "OpenRouter"
     - name: "NagaAI"
       apiKey: "${NAGA_API_KEY}"
       baseURL: "https://api.naga.ac/v1"
@@ -232,19 +245,6 @@ endpoints:
       titleModel: "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO"
       dropParams: ["top_p"]
       modelDisplayLabel: "HuggingFace"
-    - name: "OpenRouter"
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: "${OPENROUTER_KEY}" # NOT OPENROUTER_API_KEY
-      baseURL: "https://openrouter.ai/api/v1"
-      models:
-        default: ["meta-llama/llama-3-70b-instruct"]
-        fetch: true
-      titleConvo: true
-      titleModel: "meta-llama/llama-3-70b-instruct"
-      # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
-      dropParams: ["stop"]
-      modelDisplayLabel: "OpenRouter"
     - name: "together.ai"
       apiKey: "${TOGETHERAI_API_KEY}"
       baseURL: "https://api.together.xyz"
