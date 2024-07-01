@@ -9,6 +9,18 @@ cache: true
 
 fileStrategy: "firebase"
 
+fileConfig:
+  endpoints:
+    default:
+      fileLimit: 10
+      fileSizeLimit: 10
+      totalSizeLimit: 50
+      supportedMimeTypes:
+        - "*"
+  serverFileSizeLimit: 1000
+  avatarSizeLimit: 2
+ 
+
 # Custom interface configuration
 interface:
   # Privacy policy settings
@@ -369,3 +381,24 @@ endpoints:
       summaryModel: "meta-llama/Llama-2-7b-chat-hf"
       forcePrompt: false
       modelDisplayLabel: "Anyscale"
+    - name: "ChatAnyWhere"
+      apiKey: "${GPT_GE_KEY}"
+      baseURL: "https://free.gpt.ge/v1/chat/completions"
+      models:
+        default: [
+          "gpt-3.5-turbo-0125",
+          "gpt-3.5-turbo-1106",
+          "gpt-3.5-turbo",
+          "gpt-3.5-turbo-16k",
+          "net-gpt-3.5-turbo",
+          "whisper-1",
+          "dall-e-2"
+          ]
+        fetch: true
+      titleConvo: true
+      titleModel: "gpt-3.5-turbo"
+      summarize: false
+      summaryModel: "gpt-3.5-turbo"
+      forcePrompt: false
+      modelDisplayLabel: "GPT-channel-1"
+      iconURL: "https://avatars.githubusercontent.com/u/111742565?s=48&v=4"
