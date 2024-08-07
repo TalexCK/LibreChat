@@ -16,9 +16,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - target: api-build
-            file: Dockerfile.multi
-            image_name: librechat-dev-api
           - target: node
             file: Dockerfile
             image_name: librechat-dev
