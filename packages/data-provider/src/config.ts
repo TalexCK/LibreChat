@@ -572,7 +572,7 @@ export const defaultEndpoints: EModelEndpoint[] = [
 ];
 
 export const alternateName = {
-  [EModelEndpoint.openAI]: 'ChatGPT',
+  [EModelEndpoint.openAI]: 'AI',
   [EModelEndpoint.assistants]: 'Assistants',
   [EModelEndpoint.agents]: 'Agents',
   [EModelEndpoint.azureAssistants]: 'Azure Assistants',
