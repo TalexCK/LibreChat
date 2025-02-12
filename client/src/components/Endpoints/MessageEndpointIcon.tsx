@@ -28,7 +28,7 @@ function getOpenAIColor(_model: string | null | undefined) {
   if (model && /\b(o1|o3)\b/i.test(model)) {
     return '#000000';
   }
-  return model.includes('gpt-4') ? '#AB68FF' : '#19C37D';
+  return model.includes('gpt-4') ? '#000000' : '#000000';
 }
 
 function getGoogleIcon(model: string | null | undefined, size: number) {

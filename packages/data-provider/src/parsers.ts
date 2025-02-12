@@ -250,8 +250,30 @@ export const getResponseSender = (endpointOption: t.TEndpointOption): string => 
       return 'GPT-4';
     } else if (model && model.includes('mistral')) {
       return 'Mistral';
+    } else if (model && model.includes('dalle-3')) {
+      return 'DALL·E';
+    } else if (model && model.includes('flux')) {
+      return 'Flux';
+    } else if (model && model.includes('ideogram')) {
+      return 'Ideogram';
+    } else if (model && model.includes('playground-v2.5')) {
+      return 'Playground';
+    } else if (model && model.includes('stable-diffusion')) {
+      return 'Stable-diffusion';
+    } else if (model && model.includes('gemini')) {
+      return 'Gemini';
+    } else if (model && model.includes('llama')) {
+      return 'Meta-Llama';
+    } else if (model && model.includes('Qwen')) {
+      return 'Qwen';
+    } else if (model && model.includes('pixtral')) {
+      return 'Pixtral';
+    } else if (model && model.includes('suno')) {
+      return 'Suno';
+    } else if (model && model.includes('claude')) {
+      return 'Claude';
     }
-    return (alternateName[endpoint] as string | undefined) ?? 'ChatGPT';
+    return (alternateName[endpoint] as string | undefined) ?? 'AI';
   }
 
   if (endpoint === EModelEndpoint.anthropic) {
