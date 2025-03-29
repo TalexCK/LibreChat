@@ -5,6 +5,7 @@ const { SplitStreamHandler, GraphEvents } = require('@librechat/agents');
 const {
   Constants,
   ImageDetail,
+  ContentTypes,
   EModelEndpoint,
   resolveHeaders,
   KnownEndpoints,
@@ -223,10 +224,6 @@ class OpenAIClient extends BaseClient {
 
     if (this.azureEndpoint && this.options.debug) {
       logger.debug('Using Azure endpoint');
-    }
-
-    if (this.useOpenRouter) {
-      this.completionsUrl = 'https://openrouter.ai/api/v1/chat/completions';
     }
 
     return this;
@@ -505,8 +502,24 @@ class OpenAIClient extends BaseClient {
     if (promptPrefix && this.isOmni === true) {
       const lastUserMessageIndex = payload.findLastIndex((message) => message.role === 'user');
       if (lastUserMessageIndex !== -1) {
-        payload[lastUserMessageIndex].content =
-          `${promptPrefix}\n${payload[lastUserMessageIndex].content}`;
+        if (Array.isArray(payload[lastUserMessageIndex].content)) {
+          const firstTextPartIndex = payload[lastUserMessageIndex].content.findIndex(
+            (part) => part.type === ContentTypes.TEXT,
+          );
+          if (firstTextPartIndex !== -1) {
+            const firstTextPart = payload[lastUserMessageIndex].content[firstTextPartIndex];
+            payload[lastUserMessageIndex].content[firstTextPartIndex].text =
+              `${promptPrefix}\n${firstTextPart.text}`;
+          } else {
+            payload[lastUserMessageIndex].content.unshift({
+              type: ContentTypes.TEXT,
+              text: promptPrefix,
+            });
+          }
+        } else {
+          payload[lastUserMessageIndex].content =
+            `${promptPrefix}\n${payload[lastUserMessageIndex].content}`;
+        }
       }
     }
 
@@ -1168,10 +1181,6 @@ ${convo}
         opts.httpAgent = new HttpsProxyAgent(this.options.proxy);
       }
 
-      if (this.isVisionModel) {
-        modelOptions.max_tokens = 4000;
-      }
-
       /** @type {TAzureConfig | undefined} */
       const azureConfig = this.options?.req?.app?.locals?.[EModelEndpoint.azureOpenAI];
 
@@ -1333,14 +1342,6 @@ ${convo}
       let streamResolve;
 
       if (
-        this.isOmni === true &&
-        (this.azure || /o1(?!-(?:mini|preview)).*$/.test(modelOptions.model)) &&
-        !/o3-.*$/.test(this.modelOptions.model) &&
-        modelOptions.stream
-      ) {
-        delete modelOptions.stream;
-        delete modelOptions.stop;
-      } else if (
         (!this.isOmni || /^o1-(mini|preview)/i.test(modelOptions.model)) &&
         modelOptions.reasoning_effort != null
       ) {

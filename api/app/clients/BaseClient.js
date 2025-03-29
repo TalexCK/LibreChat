@@ -11,9 +11,9 @@ const {
   Constants,
 } = require('librechat-data-provider');
 const { getMessages, saveMessage, updateMessage, saveConvo, getConvo } = require('~/models');
+const { checkBalance } = require('~/models/balanceMethods');
 const { truncateToolCallOutputs } = require('./prompts');
 const { addSpaceIfNeeded } = require('~/server/utils');
-const checkBalance = require('~/models/checkBalance');
 const { getFiles } = require('~/models/File');
 const TextStream = require('./TextStream');
 const { logger } = require('~/config');
@@ -879,13 +879,14 @@ class BaseClient {
         : await getConvo(this.options.req?.user?.id, message.conversationId);
 
     const unsetFields = {};
+    const exceptions = new Set(['spec', 'iconURL']);
     if (existingConvo != null) {
       this.fetchedConvo = true;
       for (const key in existingConvo) {
         if (!key) {
           continue;
         }
-        if (excludedKeys.has(key)) {
+        if (excludedKeys.has(key) && !exceptions.has(key)) {
           continue;
         }
 
