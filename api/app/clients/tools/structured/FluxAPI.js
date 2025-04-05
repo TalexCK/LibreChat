@@ -55,7 +55,7 @@ class FluxAPI extends Tool {
     // Use action: 'list_finetunes' to see available custom models. When using finetunes, use endpoint: '/v1/flux-pro-finetuned' (default) or '/v1/flux-pro-1.1-ultra-finetuned' for higher quality and aspect ratio.`;
 
     // Add base URL from environment variable with fallback
-    this.baseUrl = process.env.FLUX_API_BASE_URL || 'https://api.us1.bfl.ai';
+    this.baseUrl = process.env.FLUX_API_BASE_URL || 'https://queue.fal.run/fal-ai';
 
     // Define the schema for structured input
     this.schema = z.object({
@@ -103,22 +103,17 @@ class FluxAPI extends Tool {
         ),
       endpoint: z
         .enum([
-          '/v1/flux-pro-1.1',
-          '/v1/flux-pro',
-          '/v1/flux-dev',
-          '/v1/flux-pro-1.1-ultra',
-          '/v1/flux-pro-finetuned',
-          '/v1/flux-pro-1.1-ultra-finetuned',
+          '/flux-pro/v1.1-ultra',
         ])
         .optional()
-        .default('/v1/flux-pro-1.1')
+        .default('/flux-pro/v1.1-ultra')
         .describe('Endpoint to use for image generation.'),
       raw: z
         .boolean()
         .optional()
         .default(false)
         .describe(
-          'Generate less processed, more natural-looking images. Only works for /v1/flux-pro-1.1-ultra.',
+          'Generate less processed, more natural-looking images. Only works for /flux-pro/v1.1-ultra.',
         ),
       finetune_id: z.string().optional().describe('ID of the finetuned model to use'),
       finetune_strength: z
