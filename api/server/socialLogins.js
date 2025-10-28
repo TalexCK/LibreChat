@@ -1,5 +1,6 @@
 const passport = require('passport');
 const session = require('express-session');
+const passport = require('passport');
 const { isEnabled } = require('@librechat/api');
 const { logger } = require('@librechat/data-schemas');
 const { CacheKeys } = require('librechat-data-provider');
@@ -62,7 +63,7 @@ const configureSocialLogins = async (app) => {
     passport.use(githubLogin());
   }
   if (process.env.TALEXCK_CLIENT_ID && process.env.TALEXCK_CLIENT_SECRET) {
-    passport.use(talexckLogin());
+    passport.use('talexck', talexckLogin());
   }
   if (process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET) {
     passport.use(discordLogin());

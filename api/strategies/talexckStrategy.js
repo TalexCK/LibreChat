@@ -38,6 +38,9 @@ module.exports = () => {
     talexckLogin,
   );
 
+  // Name the strategy so routes can reference 'talexck'
+  strategy.name = 'talexck';
+
   // Provide a userProfile fetcher so socialLogin receives a proper profile object
   strategy.userProfile = async function userProfile(accessToken, done) {
     try {
@@ -65,4 +68,3 @@ module.exports = () => {
 
   return strategy;
 };
-
