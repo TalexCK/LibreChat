@@ -188,6 +188,33 @@ Keep up with the latest updates by visiting the releases page and notes:
 
 ---
 
+## TalexCK's Space SSO (OpenID)
+
+Use LibreChat’s built‑in OpenID provider to add a minimal OAuth login for TalexCK’s Space (blog as the authorization server).
+
+Quick setup:
+- In TalexCK’s Space admin → SSO Integration:
+  - Create an app and note the App ID (client_id) and client secret
+  - Set the callback to: `${DOMAIN_SERVER}/oauth/openid/callback`
+- In LibreChat `.env` configure OpenID:
+  - `OPENID_ISSUER=https://www.talexck.com/api/sso/oauth2`
+  - `OPENID_CLIENT_ID`, `OPENID_CLIENT_SECRET`, `OPENID_SESSION_SECRET`
+  - Optional UI:
+    - `OPENID_BUTTON_LABEL=TalexCK's Space`
+    - `OPENID_IMAGE_URL=https://www.talexck.com/favicon.ico` (matches site icon)
+  - Enable social login: `ALLOW_SOCIAL_LOGIN=true`
+
+Notes:
+- OIDC discovery is supported at:
+  - `/.well-known/openid-configuration` and `/api/sso/oauth2/.well-known/openid-configuration`
+- OAuth2 endpoints (for reference):
+  - Authorization: `/api/sso/oauth2/authorize`
+  - Token: `/api/sso/oauth2/token`
+  - Userinfo: `/api/sso/oauth2/userinfo`
+  - Discovery: `/.well-known/oauth-authorization-server` and `/api/sso/oauth2/.well-known/oauth-authorization-server`
+
+---
+
 ## ✨ Contributions
 
 Contributions, suggestions, bug reports and fixes are welcome!

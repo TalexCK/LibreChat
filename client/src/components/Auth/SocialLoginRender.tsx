@@ -26,6 +26,19 @@ function SocialLoginRender({
   }
 
   const providerComponents = {
+    talexck: (
+      <SocialButton
+        key="talexck"
+        enabled={true}
+        serverDomain={startupConfig.serverDomain}
+        oauthPath="talexck"
+        Icon={() => (
+          <img src="https://www.talexck.com/favicon.ico" alt="TalexCK" className="h-5 w-5" />
+        )}
+        label={"TalexCK's Space"}
+        id="talexck"
+      />
+    ),
     discord: startupConfig.discordLoginEnabled && (
       <SocialButton
         key="discord"

@@ -160,6 +160,28 @@ router.get(
 );
 
 /**
+ * TalexCK (Blog SSO) Routes
+ */
+router.get(
+  '/talexck',
+  passport.authenticate('talexck', {
+    session: false,
+  }),
+);
+
+router.get(
+  '/talexck/callback',
+  passport.authenticate('talexck', {
+    failureRedirect: `${domains.client}/oauth/error`,
+    failureMessage: true,
+    session: false,
+  }),
+  setBalanceConfig,
+  checkDomainAllowed,
+  oauthHandler,
+);
+
+/**
  * Discord Routes
  */
 router.get(

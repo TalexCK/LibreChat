@@ -6,6 +6,7 @@ const { CacheKeys } = require('librechat-data-provider');
 const {
   openIdJwtLogin,
   facebookLogin,
+  talexckLogin,
   discordLogin,
   setupOpenId,
   googleLogin,
@@ -59,6 +60,9 @@ const configureSocialLogins = async (app) => {
   }
   if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
     passport.use(githubLogin());
+  }
+  if (process.env.TALEXCK_CLIENT_ID && process.env.TALEXCK_CLIENT_SECRET) {
+    passport.use(talexckLogin());
   }
   if (process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET) {
     passport.use(discordLogin());
