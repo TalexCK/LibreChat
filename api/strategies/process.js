@@ -1,6 +1,7 @@
 const { getBalanceConfig } = require('@librechat/api');
 const { FileSources } = require('librechat-data-provider');
 const { getStrategyFunctions } = require('~/server/services/Files/strategies');
+const { logger } = require('@librechat/data-schemas');
 const { resizeAvatar } = require('~/server/services/Files/images/avatar');
 const { updateUser, createUser, getUserById } = require('~/models');
 
@@ -30,12 +31,17 @@ const handleExistingUser = async (oldUser, avatarUrl, appConfig) => {
     updatedAvatar = avatarUrl;
   } else if (!isLocal && (!oldUser?.avatar || !hasManualFlag)) {
     const userId = oldUser._id;
-    const resizedBuffer = await resizeAvatar({
-      userId,
-      input: avatarUrl,
-    });
-    const { processAvatar } = getStrategyFunctions(fileStrategy);
-    updatedAvatar = await processAvatar({ buffer: resizedBuffer, userId, manual: 'false' });
+    try {
+      const resizedBuffer = await resizeAvatar({
+        userId,
+        input: avatarUrl,
+      });
+      const { processAvatar } = getStrategyFunctions(fileStrategy);
+      updatedAvatar = await processAvatar({ buffer: resizedBuffer, userId, manual: 'false' });
+    } catch (err) {
+      // Do not fail login if avatar download fails; log and continue
+      logger.warn(`[socialLogin] Failed to fetch/process avatar for existing user: ${err?.message || err}`);
+    }
   }
 
   if (updatedAvatar) {
@@ -91,17 +97,22 @@ const createSocialUser = async ({
   const isLocal = fileStrategy === FileSources.local;
 
   if (!isLocal) {
-    const resizedBuffer = await resizeAvatar({
-      userId: newUserId,
-      input: avatarUrl,
-    });
-    const { processAvatar } = getStrategyFunctions(fileStrategy);
-    const avatar = await processAvatar({
-      buffer: resizedBuffer,
-      userId: newUserId,
-      manual: 'false',
-    });
-    await updateUser(newUserId, { avatar });
+    try {
+      const resizedBuffer = await resizeAvatar({
+        userId: newUserId,
+        input: avatarUrl,
+      });
+      const { processAvatar } = getStrategyFunctions(fileStrategy);
+      const avatar = await processAvatar({
+        buffer: resizedBuffer,
+        userId: newUserId,
+        manual: 'false',
+      });
+      await updateUser(newUserId, { avatar });
+    } catch (err) {
+      // Do not fail user creation if avatar fetch fails; proceed without avatar
+      logger.warn(`[socialLogin] Failed to fetch/process avatar for new user: ${err?.message || err}`);
+    }
   }
 
   return await getUserById(newUserId);

@@ -12,7 +12,11 @@ const getProfileDetails = ({ profile }) => ({
     profile._json?.sub ||
     profile._json?.email ||
     '',
-  avatarUrl: profile.photos?.[0]?.value || 'https://www.talexck.com/favicon.ico',
+  // Prefer 256x for quality; callers now tolerate fetch failures and won't break login
+  avatarUrl:
+    profile.photos?.[0]?.value ||
+    process.env.TALEXCK_ICON_256_URL ||
+    'https://www.talexck.com/android-chrome-256x256.png',
   username:
     profile.username ||
     profile._json?.username ||
