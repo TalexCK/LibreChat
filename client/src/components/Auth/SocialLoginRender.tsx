@@ -33,6 +33,13 @@ function SocialLoginRender({
         serverDomain={startupConfig.serverDomain}
         oauthPath="talexck"
         label={"TalexCK's Space"}
+        Icon={() => (
+          <img
+            src="/assets/favicon_16x16.png"
+            alt="TalexCK"
+            className="h-5 w-5"
+          />
+        )}
         id="talexck"
       />
     ),
